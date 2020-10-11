@@ -3,45 +3,41 @@ package com.parapharma.analytics;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
 
-/**
- * Simple brute force implementation
- *
- */
 public class ReadSymptomDataFromFile implements ISymptomReader {
 
 	private String filepath;
-	
-	/**
-	 * 
-	 * @param filepath a full or partial path to file with symptom strings in it, one per line
-	 */
-	public ReadSymptomDataFromFile (String filepath) {
+
+
+	public ReadSymptomDataFromFile(String filepath) {
 		this.filepath = filepath;
 	}
-	
-	@Override
-	public List<String> GetSymptoms() {
-		ArrayList<String> result = new ArrayList<String>();
-		
+
+	public void GetSymptoms() {
+
 		if (filepath != null) {
 			try {
-				BufferedReader reader = new BufferedReader (new FileReader(filepath));
-				String line = reader.readLine();
-				
-				while (line != null) {
-					result.add(line);
-					line = reader.readLine();
+				BufferedReader reader = new BufferedReader(new FileReader(filepath));
+				String line;
+
+				while ((line = reader.readLine()) != null) {
+					if (counter.containsKey(line)) {
+						counter.put(line, counter.get(line) + 1);
+					} else {
+						counter.put(line, 1);
+					}
 				}
-				reader.close();
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			System.out.println(counter);
 		}
-		
-		return result;
 	}
-
 }
+
+
+
+
+
